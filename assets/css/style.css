@@ -67,6 +67,7 @@ h6 {
   transition: ease-in-out 0.3s;
   font-size: 20px;
   border-radius: 20px;
+  margin: 6px;
 }
 
 #header h1 {
