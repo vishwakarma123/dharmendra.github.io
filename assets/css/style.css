@@ -227,10 +227,10 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0;
+  padding: 5px;
   font-family:"Lora", serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
   color: rgba(255, 255, 255, 0.7);
   white-space: nowrap;
   transition: 0.3s;
@@ -247,7 +247,7 @@ h6 {
   content: "";
   position: absolute;
   width: 0;
-  height: 2px;
+  height: 3px;
   bottom: -4px;
   left: 0;
   background-color:#14eff3;
@@ -260,7 +260,7 @@ h6 {
 .navbar li:hover>a:before,
 .navbar .active:before {
   visibility: visible;
-  width: 25px;
+  width: 65px;
 }
 
 .navbar a:hover,
