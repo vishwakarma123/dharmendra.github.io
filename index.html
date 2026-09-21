@@ -106,7 +106,7 @@
     }
 
     ::-webkit-scrollbar {
-      width: 6px
+      width: 10px
     }
 
     ::-webkit-scrollbar-track {
@@ -114,8 +114,59 @@
     }
 
     ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--accent), var(--purple));
+      border-radius: 10px;
+      border: 2px solid var(--bg);
+    }
+
+    ::selection {
       background: var(--accent);
-      border-radius: 10px
+      color: #fff;
+    }
+
+    /* ATTRACTIVE GLOBAL POLISH — gradient headline accent, soft section glow */
+    .sh {
+      background: linear-gradient(120deg, var(--text) 55%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    .stag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 16px 5px 14px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: color-mix(in srgb, var(--accent) 8%, transparent);
+      backdrop-filter: blur(8px);
+    }
+
+    .stag::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+
+    section {
+      position: relative;
+    }
+
+    section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(720px, 80%);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      pointer-events: none;
     }
 
     /* AMBIENT FLUID GLOW CURSOR */
@@ -187,29 +238,40 @@
     /* NAV */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1240px, calc(100% - 32px));
       z-index: 999;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 64px;
-      background: var(--nav-bg);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border);
-      transition: padding 0.3s;
+      padding: 14px 28px;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: 1px solid transparent;
+      border-radius: 18px;
+      box-shadow: none;
+      transition: background-color .35s ease, border-color .35s ease, box-shadow .35s ease, backdrop-filter .35s ease, padding .3s;
     }
+
+    /* Nav stays fully transparent at ALL times — top of page and while scrolling */
 
     .logo {
       font-family: var(--fh);
       font-size: 24px;
       font-weight: 800;
-      color: var(--accent);
+      background: linear-gradient(120deg, var(--accent), var(--purple));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
       text-decoration: none;
     }
 
     .logo em {
+      -webkit-text-fill-color: var(--text);
       color: var(--text);
       font-style: normal;
     }
@@ -229,10 +291,35 @@
       text-transform: uppercase;
       letter-spacing: .08em;
       transition: color .2s;
+      position: relative;
+      padding: 6px 2px;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, .45);
+    }
+
+    [data-theme="light"] .navlinks a {
+      text-shadow: 0 1px 8px rgba(255, 255, 255, .75);
+    }
+
+    .navlinks a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--purple));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
     }
 
     .navlinks a:hover {
       color: var(--accent);
+    }
+
+    .navlinks a:hover::after {
+      transform: scaleX(1);
     }
 
     .navlinks .hire {
@@ -498,15 +585,23 @@
       font-weight: 800;
       line-height: 1.05;
       letter-spacing: -2px;
-      color: #fff;
+      color: var(--text);
       margin-bottom: 20px;
-      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
 
     .hero-title .hl {
-      background: linear-gradient(135deg, #00c8ff, #80e5ff);
+      background: linear-gradient(120deg, var(--accent) 10%, var(--purple) 55%, var(--gold) 100%);
+      background-size: 200% auto;
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
+      color: transparent;
+      animation: headlineShine 6s linear infinite;
+    }
+
+    @keyframes headlineShine {
+      to { background-position: 200% center; }
     }
 
     .hero-title .sub {
@@ -537,26 +632,46 @@
 
     .btn-fill {
       padding: 15px 36px;
-      border-radius: 4px;
-      background: var(--accent);
-      color: var(--bg);
+      border-radius: 100px;
+      background: linear-gradient(120deg, var(--accent), var(--purple));
+      background-size: 160% auto;
+      color: #fff;
       font-weight: 700;
       font-size: 14px;
       letter-spacing: .04em;
       text-decoration: none;
-      box-shadow: 0 0 30px rgba(0, 200, 255, .35);
+      border: none;
+      box-shadow: 0 12px 34px rgba(0, 200, 255, .35);
       transition: all .25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-fill::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, .45) 50%, transparent 70%);
+      transform: translateX(-120%);
+      transition: transform .6s ease;
     }
 
     .btn-fill:hover {
       transform: translateY(-3px);
-      box-shadow: 0 0 55px rgba(0, 200, 255, .6);
+      background-position: right center;
+      box-shadow: 0 18px 48px rgba(124, 58, 237, .45);
+    }
+
+    .btn-fill:hover::before {
+      transform: translateX(120%);
     }
 
     .btn-out {
       padding: 15px 36px;
-      border-radius: 4px;
+      border-radius: 100px;
       border: 1.5px solid var(--border);
+      background: color-mix(in srgb, var(--card) 70%, transparent);
+      backdrop-filter: blur(10px);
       color: var(--text);
       font-weight: 500;
       font-size: 14px;
@@ -568,6 +683,7 @@
       border-color: var(--accent);
       color: var(--accent);
       transform: translateY(-3px);
+      box-shadow: 0 14px 34px var(--shadow);
     }
 
     /* STEP 3: PROFILE CUTOUT IN FRONT (z-10) WITH SUBTLE GLOWING HALO OVERLAY */
@@ -787,6 +903,36 @@
     [data-theme="light"] .tc,
     [data-theme="light"] .abox {
       box-shadow: 0 10px 30px var(--shadow);
+    }
+
+    /* ATTRACTIVE CARD POLISH — gradient top edge + lift
+       (uses ::after so it never fights .sk-card::before wash / .sc::after underline) */
+    .sk-card,
+    .sc,
+    .pc,
+    .tc {
+      overflow: hidden;
+    }
+
+    .sk-card::after,
+    .pc::after,
+    .tc::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--purple), var(--gold));
+      opacity: 0;
+      transition: opacity .35s ease;
+      pointer-events: none;
+    }
+
+    .sk-card:hover::after,
+    .pc:hover::after,
+    .tc:hover::after {
+      opacity: 1;
     }
 
     [data-theme="light"] .sk-card:hover,
@@ -3548,8 +3694,8 @@
        ========================================================= */
     window.addEventListener('scroll', () => {
       const topnav = document.getElementById('topnav');
-      if (topnav) topnav.style.padding = window.scrollY > 60 ? '13px 64px' : '20px 64px';
-    });
+      if (topnav) topnav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
 
     const ham = document.getElementById('ham');
     const mnav = document.getElementById('mnav');
