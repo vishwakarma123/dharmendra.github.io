@@ -66,7 +66,18 @@
       transition: background-color .4s ease, color .4s ease;
     }
 
-    section, nav, footer, .mobile-nav, .sk-card, .sc, .pc, .tc, .photobox, .ct-form, input, textarea {
+    section,
+    nav,
+    footer,
+    .mobile-nav,
+    .sk-card,
+    .sc,
+    .pc,
+    .tc,
+    .photobox,
+    .ct-form,
+    input,
+    textarea {
       transition: background-color .4s ease, color .4s ease, border-color .4s ease, box-shadow .4s ease;
     }
 
@@ -207,8 +218,13 @@
     }
 
     @keyframes atmosDrift {
-      from { transform: translate3d(0, -20px, 0) scale(1); }
-      to   { transform: translate3d(0, 24px, 0) scale(1.06); }
+      from {
+        transform: translate3d(0, -20px, 0) scale(1);
+      }
+
+      to {
+        transform: translate3d(0, 24px, 0) scale(1.06);
+      }
     }
 
     /* Per-section color + position choreography (alternating sides) */
@@ -290,6 +306,7 @@
 
     /* Mobile: smaller, softer orbs */
     @media (max-width: 768px) {
+
       section:not(#home)::after,
       footer::after {
         width: 72vw;
@@ -300,6 +317,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+
       section:not(#home)::after,
       footer::after {
         animation: none;
@@ -556,6 +574,7 @@
       pointer-events: none;
       overflow: hidden;
     }
+
     .orb {
       position: absolute;
       border-radius: 50%;
@@ -565,55 +584,102 @@
       will-change: transform;
       animation: orbDrift 14s ease-in-out infinite alternate;
     }
+
     .orb-a {
-      width: 560px; height: 560px; left: -160px; top: -160px;
-      background: radial-gradient(circle, rgba(0,200,255,.34), transparent 65%);
+      width: 560px;
+      height: 560px;
+      left: -160px;
+      top: -160px;
+      background: radial-gradient(circle, rgba(0, 200, 255, .34), transparent 65%);
     }
+
     .orb-b {
-      width: 640px; height: 640px; right: -200px; top: 4%;
-      background: radial-gradient(circle, rgba(124,58,237,.36), transparent 65%);
+      width: 640px;
+      height: 640px;
+      right: -200px;
+      top: 4%;
+      background: radial-gradient(circle, rgba(124, 58, 237, .36), transparent 65%);
       animation-duration: 18s;
     }
+
     .orb-c {
-      width: 480px; height: 480px; left: 30%; bottom: -240px;
-      background: radial-gradient(circle, rgba(245,158,11,.20), rgba(219,39,119,.10) 55%, transparent 70%);
+      width: 480px;
+      height: 480px;
+      left: 30%;
+      bottom: -240px;
+      background: radial-gradient(circle, rgba(245, 158, 11, .20), rgba(219, 39, 119, .10) 55%, transparent 70%);
       animation-duration: 22s;
     }
+
     @keyframes orbDrift {
-      from { transform: translate(0,0) scale(1); }
-      to { transform: translate(70px,50px) scale(1.14); }
+      from {
+        transform: translate(0, 0) scale(1);
+      }
+
+      to {
+        transform: translate(70px, 50px) scale(1.14);
+      }
     }
+
     .hero-noise {
       position: absolute;
       inset: 0;
       opacity: .06;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
     }
+
     .hero-vignette {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 42%, transparent 45%, rgba(0,0,0,.48) 100%);
+      background: radial-gradient(ellipse at 50% 42%, transparent 45%, rgba(0, 0, 0, .48) 100%);
     }
+
     .hero-scanline {
       position: absolute;
-      left: 0; right: 0;
+      left: 0;
+      right: 0;
       height: 120px;
       top: -140px;
-      background: linear-gradient(to bottom, transparent, rgba(0,200,255,.06), transparent);
+      background: linear-gradient(to bottom, transparent, rgba(0, 200, 255, .06), transparent);
       animation: scanSweep 9s linear infinite;
     }
+
     @keyframes scanSweep {
-      from { top: -140px; }
-      to { top: 110%; }
+      from {
+        top: -140px;
+      }
+
+      to {
+        top: 110%;
+      }
     }
+
     @media (prefers-reduced-motion: reduce) {
-      .orb, .hero-scanline { animation: none !important; }
+
+      .orb,
+      .hero-scanline {
+        animation: none !important;
+      }
     }
+
     @media (max-width: 768px) {
-      .orb-a { width: 340px; height: 340px; }
-      .orb-b { width: 380px; height: 380px; }
-      .orb-c { display: none; }
-      .hero-scanline { display: none; }
+      .orb-a {
+        width: 340px;
+        height: 340px;
+      }
+
+      .orb-b {
+        width: 380px;
+        height: 380px;
+      }
+
+      .orb-c {
+        display: none;
+      }
+
+      .hero-scanline {
+        display: none;
+      }
     }
 
     #hero-stage-canvas {
@@ -737,18 +803,39 @@
     }
 
     @keyframes foFloatA {
-      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-      50%      { transform: translate3d(-8px, 12px, 0) rotate(180deg); }
+
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) rotate(0deg);
+      }
+
+      50% {
+        transform: translate3d(-8px, 12px, 0) rotate(180deg);
+      }
     }
 
     @keyframes foFloatB {
-      0%, 100% { transform: translate3d(0, 0, 0) rotate(45deg); }
-      50%      { transform: translate3d(10px, -14px, 0) rotate(225deg); }
+
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0) rotate(45deg);
+      }
+
+      50% {
+        transform: translate3d(10px, -14px, 0) rotate(225deg);
+      }
     }
 
     @keyframes foFloatC {
-      0%, 100% { transform: translate3d(0, 0, 0); }
-      50%      { transform: translate3d(12px, 16px, 0); }
+
+      0%,
+      100% {
+        transform: translate3d(0, 0, 0);
+      }
+
+      50% {
+        transform: translate3d(12px, 16px, 0);
+      }
     }
 
     [data-theme="light"] .about-headline-bg .hero-bg-text {
@@ -761,14 +848,31 @@
     }
 
     @media (max-width: 768px) {
-      .fo-1 { width: 22px; height: 22px; top: -14px; right: -10px; }
-      .fo-2 { bottom: -12px; left: -8px; }
-      .fo-3 { left: -18px; }
-      .about-headline-bg { top: 40%; }
+      .fo-1 {
+        width: 22px;
+        height: 22px;
+        top: -14px;
+        right: -10px;
+      }
+
+      .fo-2 {
+        bottom: -12px;
+        left: -8px;
+      }
+
+      .fo-3 {
+        left: -18px;
+      }
+
+      .about-headline-bg {
+        top: 40%;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .float-orb { animation: none !important; }
+      .float-orb {
+        animation: none !important;
+      }
     }
 
     /* DEPTH LAYERED HERO CONTENT */
@@ -844,7 +948,9 @@
     }
 
     @keyframes headlineShine {
-      to { background-position: 200% center; }
+      to {
+        background-position: 200% center;
+      }
     }
 
     .hero-title .sub {
@@ -2387,7 +2493,8 @@
   <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
 
   <!-- FLOATING LIGHT/DARK THEME TOGGLE -->
-  <button id="themeToggle" class="theme-toggle magnetic" aria-label="Toggle light and dark theme" title="Toggle light / dark theme">
+  <button id="themeToggle" class="theme-toggle magnetic" aria-label="Toggle light and dark theme"
+    title="Toggle light / dark theme">
     <span class="icon-moon" aria-hidden="true">🌙</span>
     <span class="icon-sun" aria-hidden="true">☀️</span>
   </button>
@@ -2403,7 +2510,8 @@
       <li><a href="#services">Services</a></li>
       <li><a href="#contact" class="hire">Hire Me</a></li>
       <li>
-        <button id="themeToggleNav" class="theme-toggle-nav" aria-label="Toggle light and dark theme" title="Toggle light / dark theme">
+        <button id="themeToggleNav" class="theme-toggle-nav" aria-label="Toggle light and dark theme"
+          title="Toggle light / dark theme">
           <span class="icon-moon" aria-hidden="true">🌙</span>
           <span class="icon-sun" aria-hidden="true">☀️</span>
         </button>
@@ -3370,7 +3478,7 @@
     /* =========================================================
        9. UPGRADED 3D WEBGL ENGINE:
        - Interactive mouse-tracking volumetric spotlight & floor reflection
-       - Floating 3D geometric crystals (Icosahedron, Octahedron, Torus)
+       - Golden torus-knot with orbiting moons (all other crystals removed per request)
        - Scroll-driven camera dolly
        - Volumetric beam, reflective floor, and particle sparkles
        ========================================================= */
@@ -3577,7 +3685,7 @@
       poolMesh.position.y = -2.08;
       scene.add(poolMesh);
 
-      // FLOATING 3D LOW-POLY GEOMETRIC CRYSTALS
+      // Crystal materials (kept for future shapes — icosahedron removed per user request)
       const crystalMat = new THREE.MeshStandardMaterial({
         color: 0x00c8ff,
         wireframe: true,
@@ -3586,42 +3694,8 @@
         roughness: 0.2,
         metalness: 0.8
       });
-      const purpleCrystalMat = new THREE.MeshStandardMaterial({
-        color: 0x7c3aed,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.32,
-        roughness: 0.2,
-        metalness: 0.8
-      });
 
-      // 1. Icosahedron in upper-left background (solid glass core + wire shell)
-      const ico = new THREE.Mesh(new THREE.IcosahedronGeometry(0.75, 0), crystalMat);
-      ico.position.set(-4.2, 2.8, -1.5);
-      scene.add(ico);
-      const icoCore = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(0.42, 0),
-        new THREE.MeshStandardMaterial({ color: 0x06222e, emissive: 0x00c8ff, emissiveIntensity: 0.55, roughness: 0.15, metalness: 0.4, transparent: true, opacity: 0.9 })
-      );
-      ico.add(icoCore);
-
-      // 2. Octahedron in upper-right background (solid glass core + wire shell)
-      const octa = new THREE.Mesh(new THREE.OctahedronGeometry(0.65, 0), purpleCrystalMat);
-      octa.position.set(4.5, 3.4, -2);
-      scene.add(octa);
-      const octaCore = new THREE.Mesh(
-        new THREE.OctahedronGeometry(0.36, 0),
-        new THREE.MeshStandardMaterial({ color: 0x1c0f33, emissive: 0x7c3aed, emissiveIntensity: 0.6, roughness: 0.15, metalness: 0.4, transparent: true, opacity: 0.9 })
-      );
-      octa.add(octaCore);
-
-      // 3. Floating Torus ring drifting in deep stage
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.9, 0.04, 16, 48), crystalMat);
-      ring.position.set(2.8, 0.5, -1);
-      ring.rotation.x = Math.PI / 3;
-      scene.add(ring);
-
-      // 4. Golden torus-knot hero crystal (slow cinematic rotation, right-mid)
+      // 2. Golden torus-knot hero crystal (slow cinematic rotation, right-mid)
       const knot = new THREE.Mesh(
         new THREE.TorusKnotGeometry(0.42, 0.12, 110, 14),
         new THREE.MeshStandardMaterial({ color: 0xf59e0b, emissive: 0xf59e0b, emissiveIntensity: 0.28, wireframe: true, transparent: true, opacity: 0.5, roughness: 0.25, metalness: 0.7 })
@@ -3629,7 +3703,7 @@
       knot.position.set(-2.9, 0.4, -0.4);
       scene.add(knot);
 
-      // 5. Orbiting satellite moons around the knot (cyan + violet trails)
+      // 3. Orbiting satellite moons around the knot (cyan + violet trails)
       const moonA = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), new THREE.MeshBasicMaterial({ color: 0x00c8ff }));
       const moonB = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), new THREE.MeshBasicMaterial({ color: 0xdb2777 }));
       scene.add(moonA);
@@ -3821,19 +3895,6 @@
           rp.position.x = poolMesh.position.x;
           rp.position.z = poolMesh.position.z;
         }
-
-        // Rotate and float the 3D crystals
-        ico.rotation.x += 0.008;
-        ico.rotation.y += 0.012;
-        ico.position.y = 2.8 + Math.sin(elapsed * 1.2) * 0.2;
-
-        octa.rotation.x += 0.012;
-        octa.rotation.z += 0.010;
-        octa.position.y = 3.4 + Math.cos(elapsed * 1.4) * 0.25;
-
-        ring.rotation.x += 0.005;
-        ring.rotation.y += 0.010;
-        ring.position.y = 0.5 + Math.sin(elapsed * 1.0 + 1) * 0.15;
 
         // Golden knot spins + bobs, reacting subtly to the cursor
         knot.rotation.x += 0.004 + Math.abs(mouseNormY) * 0.004;
