@@ -155,6 +155,7 @@
 
     section {
       position: relative;
+      isolation: isolate;
     }
 
     section::before {
@@ -167,6 +168,142 @@
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--border), transparent);
       pointer-events: none;
+    }
+
+    /* ============================================================
+       SECTION AMBIENT ATMOSPHERE — hero-style glow, but subtle.
+       One soft drifting orb per section + faint dot-grid texture,
+       alternating color/position so every page area feels alive.
+       (Hero #home keeps its own full WebGL stage — excluded.)
+       ============================================================ */
+    section:not(#home)::after,
+    footer::after {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      width: min(620px, 85vw);
+      height: min(620px, 85vw);
+      border-radius: 50%;
+      background: radial-gradient(circle at center, var(--ambient-c, var(--accent)) 0%, transparent 68%);
+      filter: blur(80px);
+      opacity: .11;
+      pointer-events: none;
+      top: 10%;
+      right: -16%;
+      animation: atmosDrift 18s ease-in-out infinite alternate;
+    }
+
+    footer {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    footer::after {
+      top: auto;
+      bottom: -55%;
+      right: -10%;
+      opacity: .08;
+    }
+
+    @keyframes atmosDrift {
+      from { transform: translate3d(0, -20px, 0) scale(1); }
+      to   { transform: translate3d(0, 24px, 0) scale(1.06); }
+    }
+
+    /* Per-section color + position choreography (alternating sides) */
+    #about::after {
+      --ambient-c: var(--purple);
+      left: -16%;
+      right: auto;
+      top: 14%;
+      animation-duration: 20s;
+    }
+
+    #skills::after {
+      --ambient-c: var(--accent);
+      right: -14%;
+      top: 26%;
+    }
+
+    #experience::after {
+      --ambient-c: var(--gold);
+      left: -14%;
+      right: auto;
+      top: 20%;
+      opacity: .09;
+      animation-duration: 22s;
+    }
+
+    #portfolio::after {
+      --ambient-c: var(--purple);
+      right: -15%;
+      top: 34%;
+      animation-duration: 21s;
+    }
+
+    #services::after {
+      --ambient-c: var(--accent);
+      left: -15%;
+      right: auto;
+      top: 16%;
+      animation-duration: 19s;
+    }
+
+    #testimonials::after {
+      --ambient-c: var(--gold);
+      right: -14%;
+      top: 24%;
+      opacity: .08;
+      animation-duration: 23s;
+    }
+
+    #contact::after {
+      --ambient-c: var(--accent);
+      left: 24%;
+      right: auto;
+      top: 4%;
+    }
+
+    /* Alternating band tint — translucent so the 3D stage shows through */
+    .sec-alt {
+      background: color-mix(in srgb, var(--bg2) 72%, transparent);
+    }
+
+    /* Faint dot-grid texture on two feature sections (shows in card gaps) */
+    #skills,
+    #portfolio {
+      background-image: radial-gradient(color-mix(in srgb, var(--text) 8%, transparent) 1px, transparent 1.5px);
+      background-size: 28px 28px;
+    }
+
+    /* Light theme: slightly stronger glows so they read on bright bg */
+    [data-theme="light"] section:not(#home)::after,
+    [data-theme="light"] footer::after {
+      opacity: .15;
+    }
+
+    [data-theme="light"] #experience::after,
+    [data-theme="light"] #testimonials::after {
+      opacity: .12;
+    }
+
+    /* Mobile: smaller, softer orbs */
+    @media (max-width: 768px) {
+      section:not(#home)::after,
+      footer::after {
+        width: 72vw;
+        height: 72vw;
+        filter: blur(60px);
+        opacity: .10;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      section:not(#home)::after,
+      footer::after {
+        animation: none;
+      }
     }
 
     /* AMBIENT FLUID GLOW CURSOR */
@@ -392,7 +529,7 @@
       cursor: pointer;
     }
 
-    /* HERO & 3D STAGE */
+    /* HERO & 3D STAGE (transparent — the fixed stage glows through) */
     #home {
       min-height: 100vh;
       display: flex;
@@ -400,22 +537,22 @@
       padding: 120px 64px 80px;
       position: relative;
       overflow: hidden;
-      background: var(--bg);
     }
 
+    /* FIXED FULL-PAGE STAGE: canvas is pinned to the viewport behind all content */
     .hero-canvas-container {
-      position: absolute;
+      position: fixed;
       inset: 0;
-      z-index: 0;
+      z-index: -1;
       pointer-events: none;
       overflow: hidden;
     }
 
-    /* ADVANCED HERO ATMOSPHERE LAYERS (blend over the WebGL canvas) */
+    /* ADVANCED HERO ATMOSPHERE LAYERS (fixed, spans the whole page) */
     .hero-atmos {
-      position: absolute;
+      position: fixed;
       inset: 0;
-      z-index: 1;
+      z-index: auto;
       pointer-events: none;
       overflow: hidden;
     }
@@ -455,7 +592,7 @@
     .hero-vignette {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 42%, transparent 42%, rgba(0,0,0,.62) 100%);
+      background: radial-gradient(ellipse at 50% 42%, transparent 45%, rgba(0,0,0,.48) 100%);
     }
     .hero-scanline {
       position: absolute;
@@ -526,6 +663,112 @@
       color: rgba(0, 200, 255, 0.25);
       text-transform: uppercase;
       margin-top: 12px;
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       ABOUT — HERO-STYLE MOTION SYSTEM
+       (giant backdrop text, floating crystal accents, GSAP drift)
+       ════════════════════════════════════════════════════════════ */
+    #about {
+      overflow: hidden;
+    }
+
+    #about .wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Giant "ABOUT" backdrop — same treatment as the hero's DHARMENDRA */
+    .about-headline-bg {
+      position: absolute;
+      top: 46%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      text-align: center;
+      z-index: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .about-headline-bg .hero-bg-text {
+      font-size: clamp(48px, 10vw, 150px);
+    }
+
+    /* Floating crystal accents orbiting the photo (transform-only, GPU cheap) */
+    .float-orb {
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .fo-1 {
+      top: -20px;
+      right: -20px;
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 55%, transparent);
+      animation: foFloatA 9s ease-in-out infinite;
+    }
+
+    .fo-2 {
+      bottom: -18px;
+      left: -16px;
+      width: 15px;
+      height: 15px;
+      background: var(--purple);
+      transform: rotate(45deg);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--purple) 60%, transparent);
+      animation: foFloatB 12s ease-in-out infinite;
+    }
+
+    .fo-3 {
+      top: 24%;
+      left: -26px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 14px color-mix(in srgb, var(--gold) 60%, transparent);
+      animation: foFloatC 7.5s ease-in-out infinite;
+    }
+
+    @keyframes foFloatA {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      50%      { transform: translate3d(-8px, 12px, 0) rotate(180deg); }
+    }
+
+    @keyframes foFloatB {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(45deg); }
+      50%      { transform: translate3d(10px, -14px, 0) rotate(225deg); }
+    }
+
+    @keyframes foFloatC {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50%      { transform: translate3d(12px, 16px, 0); }
+    }
+
+    [data-theme="light"] .about-headline-bg .hero-bg-text {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(2, 132, 199, 0.2);
+    }
+
+    [data-theme="light"] .about-headline-bg .hero-bg-subtext {
+      color: rgba(2, 132, 199, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .fo-1 { width: 22px; height: 22px; top: -14px; right: -10px; }
+      .fo-2 { bottom: -12px; left: -8px; }
+      .fo-3 { left: -18px; }
+      .about-headline-bg { top: 40%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .float-orb { animation: none !important; }
     }
 
     /* DEPTH LAYERED HERO CONTENT */
@@ -844,7 +1087,7 @@
     }
 
     .sec-alt {
-      background: var(--bg2);
+      background: color-mix(in srgb, var(--bg2) 72%, transparent);
     }
 
     .wrap {
@@ -1932,7 +2175,7 @@
 
     /* FOOTER */
     footer {
-      background: var(--bg);
+      background: color-mix(in srgb, var(--bg) 58%, transparent);
       border-top: 1px solid var(--border);
       padding: 44px 64px;
       display: flex;
@@ -2122,6 +2365,23 @@
 </head>
 
 <body>
+  <!-- ═══ FIXED FULL-PAGE 3D STAGE BACKGROUND — the hero WebGL scene now lives
+       behind EVERY section on the page (spotlight, crystals, grid, particles
+       all keep animating while you scroll the whole site over them) ═══ -->
+  <div id="hero-canvas-container" class="hero-canvas-container" aria-hidden="true">
+    <canvas id="hero-stage-canvas"></canvas>
+  </div>
+
+  <!-- Page-wide atmosphere: aurora orbs + film grain + vignette + scan sweep -->
+  <div class="hero-atmos" aria-hidden="true">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-scanline"></div>
+  </div>
+
   <!-- AMBIENT FLUID GLOW CURSOR -->
   <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
   <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
@@ -2165,21 +2425,6 @@
 
   <!-- HERO -->
   <section id="home">
-    <!-- 3D Canvas Stage Background (Overhead Swaying Spotlight, Reflective Floor, Floating Sparkles, #070709 Fog) -->
-    <div id="hero-canvas-container" class="hero-canvas-container">
-      <canvas id="hero-stage-canvas"></canvas>
-    </div>
-
-    <!-- ADVANCED ATMOSPHERE: aurora orbs + film grain + vignette + scan sweep -->
-    <div class="hero-atmos" aria-hidden="true">
-      <div class="orb orb-a"></div>
-      <div class="orb orb-b"></div>
-      <div class="orb orb-c"></div>
-      <div class="hero-noise"></div>
-      <div class="hero-vignette"></div>
-      <div class="hero-scanline"></div>
-    </div>
-
     <div class="hero-stage-wrap">
       <!-- STEP 3: MAIN HEADLINE TEXT IN THE BACK (z-0) -->
       <div class="hero-headline-bg" aria-hidden="true">
@@ -2252,11 +2497,16 @@
 
   <!-- ABOUT -->
   <section id="about" class="sec-alt">
+    <!-- Giant backdrop text — mirrors the hero's DHARMENDRA treatment -->
+    <div class="about-headline-bg" aria-hidden="true">
+      <div class="hero-bg-text">ABOUT</div>
+      <div class="hero-bg-subtext">WHO I AM &bull; DEVELOPER PROFILE</div>
+    </div>
     <div class="wrap">
       <div class="stag reveal">Who I Am</div>
       <h2 class="sh reveal">About Me</h2>
       <p class="sd reveal">Passionate developer crafting efficient, scalable solutions with attention to detail.</p>
-      <div class="about-grid reveal">
+      <div class="about-grid">
         <div class="aphoto">
           <div class="photobox">
             <img src="assets/img/me.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
@@ -2265,6 +2515,9 @@
               <circle cx="12" cy="7" r="4" />
             </svg>
           </div>
+          <span class="float-orb fo-1" aria-hidden="true"></span>
+          <span class="float-orb fo-2" aria-hidden="true"></span>
+          <span class="float-orb fo-3" aria-hidden="true"></span>
         </div>
         <div class="ainfo">
           <h3>Software Developer &amp;<br>ServiceNow Developer</h3>
@@ -2769,7 +3022,7 @@
     } else {
       // FIX: generic reveal handler — titles, subtitles, about-grid, filters, contact grid
       // (previously only .pc/.sk-card/.sc/.tc had GSAP tweens, so .stag/.sh/.sd stayed opacity:0)
-      gsap.utils.toArray('.reveal:not(.pc):not(.sk-card):not(.sc):not(.tc)').forEach((el) => {
+      gsap.utils.toArray('.reveal:not(.pc):not(.sk-card):not(.sc):not(.tc):not(.about-grid)').forEach((el) => {
         gsap.fromTo(el,
           { opacity: 0, y: 32 },
           {
@@ -2846,6 +3099,73 @@
           opacity: 0.15,
           ease: 'none'
         });
+      }
+
+      /* =========================================================
+         2b. ABOUT — HERO-STYLE CINEMATIC CHOREOGRAPHY
+         (giant bg text drift, staggered entrance, scroll parallax)
+         ========================================================= */
+      const aboutReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const aboutGrid = document.querySelector('#about .about-grid');
+      if (aboutGrid && !aboutReduceMotion) {
+        // (a) Giant "ABOUT" backdrop drifts exactly like the hero's DHARMENDRA text
+        const aboutBgText = document.querySelector('.about-headline-bg');
+        if (aboutBgText) {
+          gsap.fromTo(aboutBgText,
+            { y: 70, opacity: 0.1 },
+            {
+              y: -70,
+              opacity: 0.3,
+              ease: 'none',
+              scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: true }
+            }
+          );
+        }
+
+        // (b) Cinematic staggered entrance — mirrors the hero load choreography.
+        //     .about-grid itself has NO .reveal class: the timeline owns its children.
+        const iboxes = aboutGrid.querySelectorAll('.ibox');
+        iboxes.forEach((b) => { b.dataset.revealing = '1'; }); // pause tilt during entrance
+        gsap.timeline({
+          scrollTrigger: { trigger: aboutGrid, start: 'top 82%', toggleActions: 'play none none none' },
+          onComplete: () => {
+            iboxes.forEach((b) => { b.dataset.revealing = '0'; b.classList.add('visible'); });
+            aboutGrid.classList.add('visible');
+          }
+        })
+          .fromTo('.aphoto',
+            { opacity: 0, x: -70, rotate: -6, scale: 0.92 },
+            { opacity: 1, x: 0, rotate: 0, scale: 1, duration: 0.95, ease: 'power3.out' })
+          .fromTo('#about .ainfo h3',
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.45')
+          .fromTo('#about .ainfo > p',
+            { opacity: 0, y: 26 },
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.14, ease: 'power2.out' }, '-=0.4')
+          .fromTo(iboxes,
+            { opacity: 0, y: 28, scale: 0.95 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.55, stagger: 0.09, ease: 'power2.out', clearProps: 'opacity,transform' }, '-=0.35')
+          .fromTo('.atag',
+            { opacity: 0, y: 14, scale: 0.8 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.45, stagger: 0.05, ease: 'back.out(2)', clearProps: 'opacity,transform' }, '-=0.3');
+
+        // (c) Scroll drift — photo & info glide in opposite directions (desktop only)
+        if (window.innerWidth > 768) {
+          gsap.to('.aphoto', {
+            yPercent: -12,
+            ease: 'none',
+            scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: 1 }
+          });
+          gsap.to('.ainfo', {
+            yPercent: 7,
+            ease: 'none',
+            scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: 1 }
+          });
+        }
+      } else if (aboutGrid) {
+        // Reduced motion — show everything instantly, no choreography
+        aboutGrid.classList.add('visible');
+        aboutGrid.querySelectorAll('.ibox').forEach((b) => b.classList.add('visible'));
       }
 
       /* =========================================================
@@ -3451,12 +3771,8 @@
       }
 
       const clock = new THREE.Clock();
-      let heroVisible = true;
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver((entries) => {
-          heroVisible = entries[0].isIntersecting;
-        }, { threshold: 0 }).observe(document.getElementById('home'));
-      }
+      // FIXED FULL-PAGE BACKGROUND: the stage renders behind every section,
+      // so there is NO hero-visibility pause — only the tab-hidden guard.
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) clock.stop();
         else clock.start();
@@ -3464,7 +3780,7 @@
 
       function animate() {
         requestAnimationFrame(animate);
-        if (!heroVisible || document.hidden) return;
+        if (document.hidden) return;
         const dt = Math.min(clock.getDelta(), 0.05);
         const elapsed = clock.elapsedTime;
 
